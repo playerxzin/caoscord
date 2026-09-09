@@ -38,3 +38,13 @@ A base usa STUN público para chamadas. Em algumas redes restritas, câmera/voz/
 ## Anti-spam
 
 O servidor limita rajadas de mensagens: ao atingir 5 mensagens em menos de 5 segundos, bloqueia novos envios por 5 segundos e exibe o aviso **“EITA! PERAÍ. SEGURA A ONDA”** no cliente. A regra vale para canais e mensagens diretas.
+
+
+## v0.4
+- Nova tela Amigos estilo app desktop moderno
+- Abas Disponível / Todos / Pendente
+- Lista central de amigos
+- Painel Ativo agora
+- Sidebar de mensagens diretas e canais
+- Barra de servidores e perfil inferior
+- Mantidos chat, voz, vídeo, tela, perfil e anti-spam

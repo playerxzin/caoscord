@@ -1,153 +1,72 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#101218" />
-  <meta name="description" content="Caos Cord - converse, crie servidores e entre em chamadas." />
-  <link rel="manifest" href="/manifest.webmanifest" />
-  <link rel="icon" href="/icon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="/style.css" />
-  <title>Caos Cord</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0b0d12"><meta name="description" content="Caos Cord">
+<link rel="manifest" href="/manifest.webmanifest"><link rel="icon" href="/icon.svg" type="image/svg+xml"><link rel="stylesheet" href="/style.css">
+<title>Caos Cord</title>
 </head>
 <body>
-  <div id="toast"></div>
+<div id="toast"></div>
+<section id="auth" class="auth-screen">
+  <div class="auth-brand"><div class="logo-big">C</div><h1>CAOS CORD</h1><p>Converse, crie grupos e entre em chamadas.</p></div>
+  <form id="authForm" class="auth-card"><h2 id="authTitle">Entrar</h2><label>Usuário<input id="username" autocomplete="username" placeholder="seu_usuario" required></label><label id="displayNameWrap" class="hidden">Nome de exibição<input id="displayName" placeholder="Como você quer aparecer"></label><label>Senha<input id="password" type="password" autocomplete="current-password" placeholder="••••••••" required></label><button class="primary" type="submit" id="authSubmit">Entrar</button><button class="link-btn" type="button" id="toggleAuth">Ainda não tenho conta</button><button class="download-btn" type="button" id="installBtn">⬇ Instalar Caos Cord</button><small id="installHint">Funciona no navegador e pode ser instalado.</small></form>
+</section>
 
-  <section id="auth" class="auth-screen">
-    <div class="auth-brand">
-      <div class="logo-big">C</div>
-      <h1>CAOS CORD</h1>
-      <p>Seu espaço. Suas conversas. Seu caos.</p>
+<main id="app" class="app hidden">
+  <aside class="server-rail">
+    <button class="server-icon home active" id="friendsHomeBtn" title="Início">C</button>
+    <div id="serverIcons"></div>
+    <button class="server-icon add" id="addServer" title="Adicionar servidor">＋</button>
+    <button class="server-icon discover" title="Descobrir">⌕</button>
+  </aside>
+
+  <aside class="sidebar">
+    <div class="dm-search-top"><input id="dmSearch" placeholder="Encontre ou comece uma conversa"></div>
+    <nav class="home-nav">
+      <button id="friendsBtn" class="home-nav-item active"><span>👥</span><b>Amigos</b></button>
+      <button class="home-nav-item"><span>🎮</span><b>Biblioteca</b></button>
+      <button class="home-nav-item"><span>🛍</span><b>Loja</b></button>
+      <button class="home-nav-item"><span>⚙</span><b>Missões</b></button>
+    </nav>
+    <div class="sidebar-divider"></div>
+    <div class="section-head"><span>MENSAGENS DIRETAS</span><button class="tiny-btn" data-action="new-dm">＋</button></div>
+    <div class="sidebar-scroll">
+      <div id="dmList"></div>
+      <div class="server-block"><div class="section-head"><span>CANAIS / GRUPOS</span><button class="tiny-btn" id="addChannel">＋</button></div><div id="textChannels"></div><div id="voiceChannels"></div></div>
     </div>
-    <form id="authForm" class="auth-card">
-      <h2 id="authTitle">Entrar</h2>
-      <label>Usuário<input id="username" autocomplete="username" placeholder="seu_usuario" required /></label>
-      <label id="displayNameWrap" class="hidden">Nome de exibição<input id="displayName" placeholder="Como você quer aparecer" /></label>
-      <label>Senha<input id="password" type="password" autocomplete="current-password" placeholder="••••••••" required /></label>
-      <button class="primary" type="submit" id="authSubmit">Entrar</button>
-      <button class="link-btn" type="button" id="toggleAuth">Ainda não tenho conta</button>
-      <button class="download-btn" type="button" id="installBtn">⬇ Instalar Caos Cord</button>
-      <small id="installHint">Funciona no navegador e pode ser instalado como aplicativo.</small>
-    </form>
+    <footer class="me-bar"><div id="meAvatar" class="avatar">C</div><div class="me-copy"><strong id="meName">playerxzin</strong><small id="meUser">Disponível</small></div><button class="icon-btn" id="micMini" title="Microfone">🎙</button><button class="icon-btn" title="Fones">🎧</button><button class="icon-btn" id="settingsBtn" title="Configurações">⚙</button></footer>
+  </aside>
+
+  <section class="content">
+    <header class="topbar">
+      <button class="mobile-menu" id="mobileMenu">☰</button>
+      <span class="friends-icon">👥</span><strong id="channelTitle">Amigos</strong><span id="channelGlyph" class="hidden">#</span>
+      <nav id="friendTabs" class="friend-tabs"><button data-tab="online" class="active">Disponível</button><button data-tab="all">Todos</button><button data-tab="pending">Pendente</button></nav>
+      <button class="add-friend-top" id="newDm">Adicionar amigo</button>
+      <div class="window-icons"><span>▣</span><span>?</span></div>
+      <span id="channelSubtitle" class="hidden"></span>
+    </header>
+
+    <div class="chat-layout">
+      <section class="chat-panel">
+        <div id="messages" class="messages"></div>
+        <form id="messageForm" class="composer"><button type="button" class="composer-plus">＋</button><textarea id="messageInput" rows="1" placeholder="Digite uma mensagem"></textarea><button class="send-btn" type="submit">➤</button></form>
+      </section>
+      <aside id="membersPanel" class="members-panel"><div class="activity-title">Ativo agora</div><div id="membersList"></div></aside>
+    </div>
   </section>
 
-  <main id="app" class="app hidden">
-    <aside class="server-rail">
-      <button class="home server-icon active" data-action="home">C</button>
-      <div id="serverIcons"></div>
-      <button class="server-icon add" id="addServer">+</button>
-    </aside>
+  <nav class="mobile-bottom"><button data-mobile="servers">◉<small>Servidores</small></button><button data-mobile="chat" class="active">⌁<small>Chat</small></button><button data-mobile="dms">✉<small>Mensagens</small></button><button id="mobileSettings">☺<small>Você</small></button></nav>
+</main>
 
-    <aside class="sidebar">
-      <header class="server-header">
-        <strong id="serverName">Caos Cord</strong>
-        <button class="icon-btn" id="addChannel" title="Criar canal">＋</button>
-      </header>
-      <div class="sidebar-scroll">
-        <div class="section-title">CANAIS DE TEXTO</div>
-        <div id="textChannels"></div>
-        <div class="section-title">CANAIS DE VOZ</div>
-        <div id="voiceChannels"></div>
-        <div class="section-title">MENSAGENS DIRETAS</div>
-        <div id="dmList"></div>
-        <button class="side-action" id="newDm">＋ Nova mensagem</button>
-      </div>
-      <footer class="me-bar">
-        <div id="meAvatar" class="avatar">C</div>
-        <div class="me-copy"><strong id="meName">Você</strong><small id="meUser">@usuario</small></div>
-        <button class="icon-btn" id="settingsBtn" title="Configurações">⚙</button>
-      </footer>
-    </aside>
+<div id="callDock" class="call-dock hidden"><div class="call-head"><div><span class="live-dot"></span><strong id="callChannel">Geral</strong><small>Conectado por voz</small></div><button id="leaveCall" class="danger-round">☎</button></div><div id="remoteVideos" class="video-grid"></div><video id="localVideo" autoplay muted playsinline></video><div class="call-controls"><button id="micBtn" class="round">🎙</button><button id="camBtn" class="round">📹</button><button id="screenBtn" class="round">🖥</button></div></div>
 
-    <section class="content">
-      <header class="topbar">
-        <button class="mobile-menu" id="mobileMenu">☰</button>
-        <span id="channelGlyph">#</span>
-        <strong id="channelTitle">geral</strong>
-        <span class="divider"></span>
-        <span id="channelSubtitle">Converse com a comunidade</span>
-        <div class="top-actions">
-          <button class="icon-btn" id="membersBtn" title="Membros">👥</button>
-        </div>
-      </header>
+<dialog id="spamModal" class="spam-modal"><div class="spam-card"><button id="spamCloseBtn" class="spam-close" type="button">×</button><h2>EITA! PERAÍ. SEGURA A ONDA</h2><p id="spamSubtitle">Você está enviando mensagens muito depressa!</p><button id="spamCalmBtn" type="button" class="spam-calm">Vou me acalmar</button></div></dialog>
 
-      <div class="chat-layout">
-        <section class="chat-panel">
-          <div id="messages" class="messages"></div>
-          <form id="messageForm" class="composer">
-            <button type="button" class="composer-plus">＋</button>
-            <textarea id="messageInput" rows="1" placeholder="Conversar em #geral"></textarea>
-            <button class="send-btn" type="submit">➤</button>
-          </form>
-        </section>
-        <aside id="membersPanel" class="members-panel">
-          <div class="section-title">MEMBROS</div>
-          <div id="membersList"></div>
-        </aside>
-      </div>
-    </section>
+<dialog id="settingsModal" class="modal"><form method="dialog" class="modal-shell settings-shell"><aside class="settings-nav"><h3>Configurações</h3><button type="button" class="settings-tab active">Minha conta</button><button type="button" class="settings-tab">Aparência</button><button type="button" class="settings-tab">Voz e vídeo</button><button type="button" class="settings-tab">Notificações</button><button type="button" class="settings-tab">Privacidade</button></aside><section class="settings-content"><button class="close-x" value="cancel">×</button><h2>Minha conta</h2><div class="profile-card"><div id="profileBanner" class="profile-banner"></div><div id="profileAvatar" class="avatar xl">C</div><div><strong id="profileName">Usuário</strong><span id="verifiedBadge" class="verified hidden">✓</span><p id="profileUsername">@usuario</p></div></div><label>Nome de exibição<input id="settingsDisplayName"></label><label>Nome de usuário<input id="settingsUsername"></label><label>Bio<textarea id="settingsBio" maxlength="190"></textarea></label><label>URL do avatar<input id="settingsAvatar" placeholder="https://..."></label><label>URL do banner<input id="settingsBanner" placeholder="https://..."></label><div class="settings-actions"><button type="button" class="danger-text" id="logoutBtn">Sair da conta</button><button type="button" class="primary slim" id="saveSettings">Salvar alterações</button></div></section></form></dialog>
 
-    <nav class="mobile-bottom">
-      <button data-mobile="servers">◉<small>Servidores</small></button>
-      <button data-mobile="chat" class="active">⌁<small>Chat</small></button>
-      <button data-mobile="dms">✉<small>Mensagens</small></button>
-      <button id="mobileSettings">☺<small>Você</small></button>
-    </nav>
-  </main>
+<dialog id="promptModal" class="modal mini-modal"><form method="dialog" class="prompt-card"><h3 id="promptTitle">Novo</h3><p id="promptText"></p><input id="promptInput"><select id="promptSelect" class="hidden"><option value="text">Texto</option><option value="voice">Voz</option></select><div><button value="cancel" class="ghost">Cancelar</button><button id="promptOk" value="default" class="primary slim">Criar</button></div></form></dialog>
 
-  <div id="callDock" class="call-dock hidden">
-    <div class="call-head"><div><span class="live-dot"></span><strong id="callChannel">Geral</strong><small>Conectado por voz</small></div><button id="leaveCall" class="danger-round">☎</button></div>
-    <div id="remoteVideos" class="video-grid"></div>
-    <video id="localVideo" autoplay muted playsinline></video>
-    <div class="call-controls">
-      <button id="micBtn" class="round">🎙</button>
-      <button id="camBtn" class="round">📹</button>
-      <button id="screenBtn" class="round">🖥</button>
-    </div>
-  </div>
-
-
-  <dialog id="spamModal" class="spam-modal">
-    <div class="spam-card">
-      <button id="spamCloseBtn" class="spam-close" type="button" aria-label="Fechar">×</button>
-      <h2>EITA! PERAÍ. SEGURA A ONDA</h2>
-      <p id="spamSubtitle">Você está enviando mensagens muito depressa!</p>
-      <button id="spamCalmBtn" type="button" class="spam-calm">Vou me acalmar</button>
-    </div>
-  </dialog>
-
-  <dialog id="settingsModal" class="modal">
-    <form method="dialog" class="modal-shell settings-shell">
-      <aside class="settings-nav"><h3>Configurações</h3><button type="button" class="settings-tab active">Minha conta</button><button type="button" class="settings-tab">Aparência</button><button type="button" class="settings-tab">Voz e vídeo</button><button type="button" class="settings-tab">Notificações</button><button type="button" class="settings-tab">Privacidade</button></aside>
-      <section class="settings-content">
-        <button class="close-x" value="cancel">×</button>
-        <h2>Minha conta</h2>
-        <div class="profile-card">
-          <div id="profileBanner" class="profile-banner"></div>
-          <div id="profileAvatar" class="avatar xl">C</div>
-          <div><strong id="profileName">Usuário</strong><span id="verifiedBadge" class="verified hidden">✓</span><p id="profileUsername">@usuario</p></div>
-        </div>
-        <label>Nome de exibição<input id="settingsDisplayName" /></label>
-        <label>Nome de usuário<input id="settingsUsername" /></label>
-        <label>Bio<textarea id="settingsBio" maxlength="190"></textarea></label>
-        <label>URL do avatar<input id="settingsAvatar" placeholder="https://..." /></label>
-        <label>URL do banner<input id="settingsBanner" placeholder="https://..." /></label>
-        <div class="settings-actions"><button type="button" class="danger-text" id="logoutBtn">Sair da conta</button><button type="button" class="primary" id="saveSettings">Salvar alterações</button></div>
-      </section>
-    </form>
-  </dialog>
-
-  <dialog id="promptModal" class="modal mini-modal">
-    <form method="dialog" class="prompt-card">
-      <h3 id="promptTitle">Novo</h3>
-      <p id="promptText"></p>
-      <input id="promptInput" />
-      <select id="promptSelect" class="hidden"><option value="text">Texto</option><option value="voice">Voz</option></select>
-      <div><button value="cancel" class="ghost">Cancelar</button><button id="promptOk" value="default" class="primary">Criar</button></div>
-    </form>
-  </dialog>
-
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="/app.js"></script>
-</body>
-</html>
+<script src="/socket.io/socket.io.js"></script><script src="/app.js"></script>
+</body></html>
