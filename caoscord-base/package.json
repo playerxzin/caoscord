@@ -1,0 +1,20 @@
+{
+  "name": "caoscord",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Caos Cord - chat em tempo real com servidores, canais e chamadas WebRTC",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "socket.io": "^4.8.1"
+  }
+}
